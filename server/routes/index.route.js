@@ -6,6 +6,7 @@ module.exports = router;
 
 const authRoutes = require('./auth.route');
 const userRoutes = require('./user.route');
+const roleRoutes = require('./role.route');
 
 // GET /ping - Check service health
 router.get('/ping', (req, res) => res.send('OK'));
@@ -20,3 +21,4 @@ router.use(
 // module routes
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
+router.use('/role', roleRoutes);
