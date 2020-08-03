@@ -5,6 +5,7 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const routes = require('../routes/index.route');
 
@@ -18,6 +19,9 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Parse Cookie header and populate req.cookies with an object
+app.use(cookieParser());
 
 // Secure apps by setting various HTTP headers
 app.use(helmet());
