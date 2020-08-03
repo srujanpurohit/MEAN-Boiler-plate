@@ -1,7 +1,7 @@
 module.exports = function JoiObjectValidator(JoiSchema, data, joiOptions) {
-  const { error, value } = JoiSchema.validate(data, joiOptions, {
+  const { error, value } = JoiSchema.validate(data, {
     stripUnknown: true,
-    ...joiOptions,
+    ...joiOptions
   });
   if (error) {
     throw error;
