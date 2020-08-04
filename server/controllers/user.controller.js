@@ -12,19 +12,19 @@ module.exports = {
     delete query.password;
     return User.paginate(query, {
       ...options,
-      select: { ...options.select, password: 0 },
+      select: { ...options.select, password: 0 }
     });
   },
-  findOne: (query, includePassword = false) => {
+  findOne: (query, includePassword = false, populateObj) => {
     let queryOptions;
     if (!includePassword) {
       queryOptions = { password: 0 };
     }
-    return User.findOne(query, queryOptions);
+    return User.findOne(query, queryOptions).populate(populateObj);
   },
   updateOneById: async (_id, data) => {
     const user = await User.findOneAndUpdate({ _id }, data, {
-      new: true,
+      new: true
     }).lean();
     if (!user) throw createHttpError(400, `User not found id ${_id}`);
     delete user.password;
@@ -36,5 +36,5 @@ module.exports = {
   updatePassword: async (_id, password) => {
     password = await bcrypt.hash(password, 10);
     return User.findOneAndUpdate({ _id }, password);
-  },
+  }
 };

@@ -8,14 +8,22 @@ const expiresIn = 8.64e7; // 1 day in ms
 
 module.exports = {
   login: async ({ email, password }) => {
-    const user = await userController.findOne({ email }, true);
+    let user = await userController.findOne({ email }, true, 'roles');
     if (user) {
+      user = user.toObject();
       const result = await bcrypt.compare(password, user.password);
       if (result) {
+        delete user.password;
+        user.admin = user.roles.find(role => {
+          if (role.specialRights) return role.specialRights.includes('admin');
+        })
+          ? true
+          : false;
         const date = new Date();
         return {
           expiresAt: new Date(date.getTime() + expiresIn), // convert ms to sec for token
-          token: generateToken(user.toObject(), expiresIn / 1000) // customize userObject to set selectedFields
+          token: generateToken(user, expiresIn / 1000), // customize userObject to set selectedFields
+          userData: user
         };
       }
     }
@@ -23,7 +31,7 @@ module.exports = {
   }
 };
 function generateToken(userData, expiresIn) {
-  return jwt.sign({ ...userData, password: undefined }, config.jwt.secret, {
+  return jwt.sign(userData, config.jwt.secret, {
     expiresIn
   });
 }

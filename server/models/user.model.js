@@ -6,15 +6,15 @@ const UserSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: [true, 'First name is required'],
-      trim: true,
+      trim: true
     },
     middleName: {
       type: String,
-      trim: true,
+      trim: true
     },
     lastName: {
       type: String,
-      trim: true,
+      trim: true
     },
     email: {
       type: String,
@@ -23,25 +23,25 @@ const UserSchema = new mongoose.Schema(
       // Regexp to validate emails with more strict rules as added in tests/users.js which also conforms mostly with RFC2822 guide lines
       match: [
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        'Please enter a valid email',
+        'Please enter a valid email'
       ],
       trim: true,
-      lowercase: true,
+      lowercase: true
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, 'Password is required']
     },
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'role',
-      },
-    ],
+        ref: 'Role'
+      }
+    ]
   },
   {
     versionKey: false,
-    timestamps: true,
+    timestamps: true
   }
 );
 
