@@ -10,6 +10,10 @@ const {
   patchValidator
 } = require('../validators/roleSchema.validators');
 const isMongoObjectId = require('../validators/mongoObjectId.validator');
+const hasModuleRightsMiddleware = require('../middlewares/hasModuleRights.middleware');
+
+// for checking if user has module rights. can also be added to individual Route
+router.use(hasModuleRightsMiddleware('role', 'read'));
 
 router.post(
   '/',

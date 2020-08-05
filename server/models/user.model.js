@@ -47,4 +47,38 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.plugin(mongoosePaginate);
 
+/**
+ * Get a User based on query with role summary
+ * In role summary module rights are based on simple 'OR' logic
+ */
+UserSchema.statics.UserRoleRightSummary = async function (query) {
+  const user = await this.model('User').findOne(query).populate('roles').lean();
+  let roleSummary = {
+    specialRights: [],
+    roleNames: [],
+    moduleRights: {}
+  };
+  user.roles.forEach(role => {
+    roleSummary.specialRights = roleSummary.specialRights.concat(
+      role.specialRights
+    );
+    roleSummary.roleNames.push(role.name);
+    role.moduleRights.forEach(moduleRight => {
+      let summaryModule = roleSummary.moduleRights[moduleRight.module];
+      if (summaryModule) {
+        summaryModule = {
+          read: summaryModule.read || moduleRight.rights.read,
+          create: summaryModule.create || moduleRight.rights.create,
+          update: summaryModule.update || moduleRight.rights.update,
+          delete: summaryModule.delete || moduleRight.rights.delete
+        };
+      } else {
+        roleSummary.moduleRights[moduleRight.module] = moduleRight.rights;
+      }
+    });
+  });
+  delete user.roles;
+  return { ...user, roleSummary };
+};
+
 module.exports = mongoose.model('User', UserSchema);

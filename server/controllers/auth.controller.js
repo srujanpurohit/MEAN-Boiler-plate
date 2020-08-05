@@ -8,17 +8,12 @@ const expiresIn = 8.64e7; // 1 day in ms
 
 module.exports = {
   login: async ({ email, password }) => {
-    let user = await userController.findOne({ email }, true, 'roles');
+    let user = await userController.findOneWithRoleSummary({ email });
     if (user) {
-      user = user.toObject();
       const result = await bcrypt.compare(password, user.password);
       if (result) {
         delete user.password;
-        user.admin = user.roles.find(role => {
-          if (role.specialRights) return role.specialRights.includes('admin');
-        })
-          ? true
-          : false;
+        user.admin = user.roleSummary.specialRights.includes('admin');
         const date = new Date();
         return {
           expiresAt: new Date(date.getTime() + expiresIn), // convert ms to sec for token

@@ -22,6 +22,9 @@ module.exports = {
     }
     return User.findOne(query, queryOptions).populate(populateObj);
   },
+  findOneWithRoleSummary: query => {
+    return User.UserRoleRightSummary(query);
+  },
   updateOneById: async (_id, data) => {
     const user = await User.findOneAndUpdate({ _id }, data, {
       new: true
