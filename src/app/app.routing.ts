@@ -1,4 +1,5 @@
 import { RouterModule } from '@angular/router';
+import { LoggedInGuard } from './shared/guards';
 import { AppComponent } from './app.component';
 
 export const AppRouting = RouterModule.forRoot([
@@ -12,6 +13,7 @@ export const AppRouting = RouterModule.forRoot([
           import('./modules/home/home.module').then(m => m.HomeModule)
       }
     ],
+    canActivate: [LoggedInGuard]
   },
   {
     path: 'auth',
