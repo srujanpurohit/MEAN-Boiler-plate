@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing';
-import { AuthHeaderInterceptor } from './interceptors/auth-header.interceptor';
+import { AuthHeaderInterceptor, HttpErrorInterceptor } from './interceptors';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -14,6 +14,11 @@ import { SharedModule } from './shared/shared.module';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHeaderInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
       multi: true
     }
   ],

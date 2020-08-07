@@ -4,12 +4,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap, pluck } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   user = new BehaviorSubject<LoginResponse['userData'] | null>(
     JSON.parse(localStorage.getItem('user'))
@@ -22,7 +23,7 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  login({
+  public login({
     email,
     password
   }: {
@@ -30,7 +31,7 @@ export class AuthService {
     password: string;
   }): Observable<LoginResponse['userData']> {
     return this.http
-      .post<LoginResponse>(`${environment.appUrl}api/auth/login`, {
+      .post<LoginResponse>(`${environment.appUrl}auth/login`, {
         email,
         password
       })
@@ -40,7 +41,13 @@ export class AuthService {
           localStorage.setItem('user', JSON.stringify(userData));
           this.authToken = token;
         }),
-        pluck('user')
+        pluck('userData')
       );
+  }
+  public logout(): void {
+    this.user.next(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('auth/Login');
   }
 }

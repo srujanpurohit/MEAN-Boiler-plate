@@ -3,10 +3,12 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthService } from '../shared/services/auth.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHeaderInterceptor implements HttpInterceptor {
@@ -22,6 +24,13 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
         setHeaders: { Authorization: `Bearer ${token}` }
       });
     }
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.statusText === 'jwt expired') {
+          this.authService.logout();
+        }
+        return throwError(err);
+      })
+    );
   }
 }
