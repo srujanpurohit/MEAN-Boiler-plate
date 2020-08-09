@@ -12,7 +12,16 @@ const config = {
     userName: env.MONGO_USER,
     password: env.MONGO_PASSWORD,
     dbName: env.MONGO_DBNAME,
-    mongooseDebug: env.MONGOOSE_DEBUG,
+    mongooseDebug: env.MONGOOSE_DEBUG
   },
+  email: {
+    host: env.EMAIL_HOST,
+    port: env.EMAIL_PORT,
+    service: env.EMAIL_SERVICE,
+    user: env.EMAIL_USER,
+    pass: env.EMAIL_PASS,
+    debug: env.EMAIL_DEBUG,
+    logger: env.EMAIL_LOGGER
+  }
 };
 module.exports = config;
