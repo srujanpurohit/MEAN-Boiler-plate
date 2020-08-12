@@ -1,0 +1,30 @@
+<p>roles-form works!</p>
+<form [formGroup]="form" (ngSubmit)="submitForm()">
+  <div><input type="text" placeholder="Name" /></div>
+  <div formArrayName="moduleRights">
+    <div
+      *ngFor="
+        let moduleRightsControl of moduleRightsArrControl.controls;
+        let i = index
+      "
+    >
+      <div [formGroupName]="i">
+        <input type="text" placeholder="moduleName" formControlName="module" />
+        <div formGroupName="rights">
+          <input type="checkbox" formControlName="read" />
+          <input type="checkbox" formControlName="create" />
+          <input type="checkbox" formControlName="update" />
+          <input type="checkbox" formControlName="delete" />
+        </div>
+      </div>
+      <button (click)="removeModuleRights(i)">Remove</button>
+    </div>
+    <button (click)="addModuleRights()">Add</button>
+  </div>
+  <div>
+    <select formControlName="specialRights">
+      <option [value]="undefined">Select special Rights</option>
+      <option value="admin">admin</option>
+    </select>
+  </div>
+</form>

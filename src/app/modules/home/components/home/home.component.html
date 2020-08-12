@@ -1,0 +1,10 @@
+<div class="navBar"><button (click)="authService.logout()">LogOut</button></div>
+<div>
+  <div>
+    <p>Navigation Links</p>
+    <ul>
+      <li><a [routerLink]="['/roles']">Roles</a></li>
+    </ul>
+  </div>
+  <div><router-outlet></router-outlet></div>
+</div>

@@ -12,9 +12,13 @@ import { Router } from '@angular/router';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  user = new BehaviorSubject<LoginResponse['userData'] | null>(
+  private user$ = new BehaviorSubject<LoginResponse['userData'] | null>(
     JSON.parse(localStorage.getItem('user'))
   );
+
+  public get user(): Observable<LoginResponse['userData'] | null> {
+    return this.user$.asObservable();
+  }
 
   public get authToken(): LoginResponse['token'] {
     return localStorage.getItem('token');
@@ -37,7 +41,7 @@ export class AuthService {
       })
       .pipe(
         tap(({ token, userData }) => {
-          this.user.next(userData);
+          this.user$.next(userData);
           localStorage.setItem('user', JSON.stringify(userData));
           this.authToken = token;
         }),
@@ -45,7 +49,7 @@ export class AuthService {
       );
   }
   public logout(): void {
-    this.user.next(null);
+    this.user$.next(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.router.navigateByUrl('auth/Login');

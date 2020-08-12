@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,13 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.auth.user.pipe(take(1)).subscribe(user => {
+      if (user) {
+        this.router.navigateByUrl('/');
+      }
+    });
+  }
 
   login(): void {
     this.auth.login(this.form.value).subscribe(
