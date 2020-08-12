@@ -14,7 +14,7 @@ mongoose.connect(mongoUri, {
   keepAlive: 1,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
+  useCreateIndex: true
 });
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
@@ -29,3 +29,7 @@ process.on('SIGINT', function () {
     process.exit(0);
   });
 });
+
+if (config.mongo.mongooseDebug) {
+  mongoose.set('debug', true);
+}
