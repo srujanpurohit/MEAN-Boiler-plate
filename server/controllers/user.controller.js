@@ -15,7 +15,8 @@ module.exports = {
       select: { ...options.select, password: 0 }
     });
   },
-  findOne: (query, includePassword = false, populateObj) => {
+  findOne: (query = {}, includePassword = false, populateObj) => {
+    delete query.password;
     let queryOptions;
     if (!includePassword) {
       queryOptions = { password: 0 };
@@ -39,5 +40,8 @@ module.exports = {
   updatePassword: async (_id, password) => {
     password = await bcrypt.hash(password, 10);
     return User.findOneAndUpdate({ _id }, password);
+  },
+  delete: filter => {
+    return User.delete(filter);
   }
 };

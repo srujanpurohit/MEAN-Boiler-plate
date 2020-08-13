@@ -48,7 +48,9 @@ router.put(
     return res.send(role);
   })
 );
-router.patch(
+
+// This will require additional validation logic for patching moduleRights based on current values
+/* router.patch(
   '/:id',
   asyncHandler(async (req, res) => {
     const data = patchValidator(req.body);
@@ -56,12 +58,12 @@ router.patch(
     let role = await roleController.updateOneById(_id, data);
     return res.send(role);
   })
-);
+); */
 router.delete(
   '/:id',
   asyncHandler(async (req, res) => {
     const _id = isMongoObjectId(req.params.id);
-    let role = await roleController.delete(_id);
+    let role = await roleController.delete({ _id });
     return res.send(role);
   })
 );

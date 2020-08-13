@@ -1,30 +1,43 @@
-<p>roles-form works!</p>
-<form [formGroup]="form" (ngSubmit)="submitForm()">
-  <div><input type="text" placeholder="Name" /></div>
+<form
+  [formGroup]="form"
+  (ngSubmit)="submitForm()"
+  [ngClass]="{ submitted: submitted }"
+>
+  <div><input type="text" placeholder="Name" formControlName="name" /></div>
   <div formArrayName="moduleRights">
     <div
       *ngFor="
         let moduleRightsControl of moduleRightsArrControl.controls;
         let i = index
       "
+      style="margin: 0.5rem; display: flex;"
     >
       <div [formGroupName]="i">
-        <input type="text" placeholder="moduleName" formControlName="module" />
+        <input type="text" placeholder="Module name" formControlName="module" />
         <div formGroupName="rights">
-          <input type="checkbox" formControlName="read" />
-          <input type="checkbox" formControlName="create" />
-          <input type="checkbox" formControlName="update" />
-          <input type="checkbox" formControlName="delete" />
+          <input type="checkbox" formControlName="read" /> read
+          <input type="checkbox" formControlName="create" /> create
+          <input type="checkbox" formControlName="update" /> update
+          <input type="checkbox" formControlName="delete" /> delete
         </div>
       </div>
-      <button (click)="removeModuleRights(i)">Remove</button>
+      <button
+        *ngIf="moduleRightsArrControl.controls.length > 1"
+        (click)="removeModuleRights(i)"
+      >
+        Remove
+      </button>
     </div>
     <button (click)="addModuleRights()">Add</button>
   </div>
   <div>
+    <!-- Add a multiSelect based on preferred library or add multiple select controls -->
     <select formControlName="specialRights">
       <option [value]="undefined">Select special Rights</option>
-      <option value="admin">admin</option>
+      <option [ngValue]="['admin']">admin</option>
     </select>
   </div>
+  <button type="submit">Save</button>
 </form>
+<div>{{ response }}</div>
+<div>{{ error }}</div>

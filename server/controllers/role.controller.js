@@ -20,7 +20,7 @@ module.exports = {
   updateMany: (query, data) => {
     return Role.updateMany(query, data);
   },
-  delete: _id => {
-    return Role.deleteOne({ _id });
+  delete: query => {
+    return Role.delete(query);
   }
 };

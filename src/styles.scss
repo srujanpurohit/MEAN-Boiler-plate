@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+$danger: red;
+
+form.submitted {
+  // for this to work submitted class must be added dynamically
+  input,
+  select {
+    &.ng-invalid {
+      border-color: $danger;
+    }
+  }
+}
+input,
+select {
+  &.ng-touched.ng-invalid {
+    border-color: $danger;
+  }
+}

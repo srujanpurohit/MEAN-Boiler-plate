@@ -62,3 +62,12 @@ router.patch(
     return res.send('Not implemented');
   })
 );
+
+router.delete(
+  ':id',
+  asyncHandler(async (req, res) => {
+    const _id = isMongoObjectId(req.params.id);
+    const deleteResult = await UserController.delete({ _id });
+    res.send(deleteResult);
+  })
+);
