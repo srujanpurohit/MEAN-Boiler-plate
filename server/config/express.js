@@ -1,7 +1,7 @@
 const config = require('./config');
 const express = require('express');
 const app = express();
-const createError = require('http-errors');
+const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -32,9 +32,10 @@ app.use(cors());
 // open api links based routes
 app.use('/api/', routes);
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  return next(createError(404));
+// Serve angular files from Express if route is does not contain api
+app.use(express.static(path.join(__dirname, '../../dist')));
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, '../../dist' + '/index.html'));
 });
 
 // error handler, send stacktrace only during development
@@ -47,7 +48,7 @@ app.use((err, req, res, next) => {
 
   // if not http error send 500;
   res.status(err.status || 500).json({
-    message: err.message,
+    message: err.message
   });
 
   //log error in development

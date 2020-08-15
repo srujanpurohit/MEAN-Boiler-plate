@@ -6,9 +6,10 @@ import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing';
 import { AuthHeaderInterceptor, HttpErrorInterceptor } from './interceptors';
 import { SharedModule } from './shared/shared.module';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [BrowserModule, AppRouting, HttpClientModule, SharedModule],
   providers: [
     {

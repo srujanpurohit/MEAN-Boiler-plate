@@ -32,7 +32,7 @@ export class LoggedInGuard implements CanActivate, CanActivateChild {
         if (user) {
           return true;
         }
-        return false;
+        this.router.navigateByUrl('auth/Login');
       })
     );
   }

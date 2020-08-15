@@ -10,7 +10,7 @@ const env = JoiObjectValidator(
 );
 // define validation for all the env vars
 const configVarsSchema = Joi.object({
-  port: Joi.number().default(3000),
+  port: Joi.number().default(8080),
   jwt: Joi.object({
     secret: Joi.string().required().description('JWT Secret required to sign'),
     algo: Joi.string().default('HS256')

@@ -1,6 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { LoggedInGuard, ModuleRightsGuard } from './shared/guards';
 import { AppComponent } from './app.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const AppRouting = RouterModule.forRoot([
   {
@@ -17,6 +18,11 @@ export const AppRouting = RouterModule.forRoot([
         path: 'auth',
         loadChildren: () =>
           import('./modules/auth/auth.module').then(m => m.AuthModule)
+      },
+      { path: '404', component: NotFoundComponent },
+      {
+        path: '**',
+        redirectTo: '404'
       }
     ]
   }
