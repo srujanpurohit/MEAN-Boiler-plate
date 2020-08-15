@@ -1,20 +1,35 @@
 const mongoose = require('mongoose');
 
-const config = require('./config');
+const { mongo: mongoConfig } = require('./config');
 
 /**
  * Initiate connection with mongoDB server based on config in env file
  */
 exports.init = async () => {
   let mongoUri = 'mongodb://';
-  if (config.mongo.userName && config.mongo.password) {
-    mongoUri += `${config.mongo.userName}:${encodeURIComponent(
-      config.mongo.password
+  if (mongoConfig.userName && mongoConfig.password) {
+    mongoUri += `${mongoConfig.userName}:${encodeURIComponent(
+      mongoConfig.password
     )}@`;
   }
-  mongoUri += `${config.mongo.host}:${config.mongo.port}/${config.mongo.dbName}`;
-
-  await mongoose.connect(mongoUri, {
+  let hosts = '';
+  if (mongoConfig.host) {
+    // For standalone server
+    hosts = `${mongoConfig.host}:${mongoConfig.port}`;
+  } else if (
+    mongoConfig.socketAddresses &&
+    mongoConfig.socketAddresses.length
+  ) {
+    // For replica set
+    mongoConfig.socketAddresses.forEach((socket, index) => {
+      hosts += socket;
+      if (index < mongoConfig.socketAddresses.length - 1) {
+        hosts += ',';
+      }
+    });
+  }
+  mongoUri += `${hosts}/${mongoConfig.dbName}`;
+  await mongoose.connect(mongoConfig.mongoURI || mongoUri, {
     keepAlive: 1,
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -42,7 +57,7 @@ exports.init = async () => {
     });
   });
 
-  if (config.mongo.mongooseDebug) {
+  if (mongoConfig.mongooseDebug) {
     mongoose.set('debug', true);
   }
 };

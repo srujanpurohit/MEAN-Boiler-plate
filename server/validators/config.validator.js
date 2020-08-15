@@ -1,57 +1,79 @@
-require('dotenv').config();
 const Joi = require('joi');
+const configJSON = require('../../config.json');
 const JoiObjectValidator = require('../utils/JoiObjectValidator');
 
-// define validation for all the env vars
-const envVarsSchema = Joi.object({
-  NODE_ENV: Joi.string()
+const env = JoiObjectValidator(
+  Joi.string()
     .allow('development', 'production', 'test')
     .default('development'),
-  SERVER_PORT: Joi.number().default(3000),
-  JWT_SECRET: Joi.string()
+  configJSON.env
+);
+// define validation for all the env vars
+const configVarsSchema = Joi.object({
+  port: Joi.number().default(3000),
+  jwt: Joi.object({
+    secret: Joi.string().required().description('JWT Secret required to sign'),
+    algo: Joi.string().default('HS256')
+  }).required(),
+  mongo: Joi.object({
+    dbName: Joi.string().required(),
+    userName: Joi.string(),
+    password: Joi.string(),
+    host: Joi.string().description('Mongo DB host url'),
+    port: Joi.number().when('host', { then: Joi.number().default(27017) }),
+    socketAddresses: Joi.array()
+      .items(
+        Joi.string()
+          .trim()
+          .min(1)
+          // Regex below is based on Hostname and port number. and may not be covering invalid Ips
+          .regex(
+            /(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])\:([0-9]+)/
+          )
+      )
+      .unique(),
+    mongoURI: Joi.string(),
+    mongooseDebug: Joi.boolean().when(env, {
+      is: Joi.string().equal('development'),
+      then: Joi.boolean().default(true),
+      otherwise: Joi.boolean().default(false)
+    })
+  })
     .required()
-    .description('JWT Secret required to sign'),
-  JWT_ALGO: Joi.string().default('HS256'),
-  MONGO_HOST: Joi.string().required().description('Mongo DB host url'),
-  MONGO_PORT: Joi.number().default(27017),
-  MONGO_DBNAME: Joi.string().required(),
-  MONGO_USER: Joi.string(),
-  MONGO_PASSWORD: Joi.string(),
-  MONGOOSE_DEBUG: Joi.boolean().when('NODE_ENV', {
-    is: Joi.string().equal('development'),
-    then: Joi.boolean().default(true),
-    otherwise: Joi.boolean().default(false)
-  }),
-  EMAIL_HOST: Joi.string().description('EMAIL SMTP host url'),
-  EMAIL_PORT: Joi.number(),
-  EMAIL_SERVICE: Joi.string(),
-  EMAIL_USER: Joi.string(),
-  EMAIL_PASS: Joi.string(),
-  EMAIL_DEBUG: Joi.boolean().when('NODE_ENV', {
-    is: Joi.string().equal('development'),
-    then: Joi.boolean().default(true),
-    otherwise: Joi.boolean().default(false)
-  }),
-  EMAIL_LOGGER: Joi.boolean().when('NODE_ENV', {
-    is: Joi.string().equal('development'),
-    then: Joi.boolean().default(true),
-    otherwise: Joi.boolean().default(false)
+    .and('userName', 'password')
+    .xor('host', 'socketAddresses.0', 'mongoURI'),
+  email: Joi.object({
+    host: Joi.string().description('EMAIL SMTP host url'),
+    port: Joi.number(),
+    service: Joi.string(),
+    user: Joi.string(),
+    password: Joi.string(),
+    debug: Joi.boolean().when(env, {
+      is: Joi.string().equal('development'),
+      then: Joi.boolean().default(true),
+      otherwise: Joi.boolean().default(false)
+    }),
+    logger: Joi.boolean().when(env, {
+      is: Joi.string().equal('development'),
+      then: Joi.boolean().default(true),
+      otherwise: Joi.boolean().default(false)
+    })
+  }).when(Joi.object({ host: Joi.exist() }), {
+    then: Joi.object({
+      user: Joi.string().required(),
+      password: Joi.string().required()
+    }).when(Joi.object({ service: Joi.exist() }), {
+      then: Joi.object({
+        user: Joi.string().required(),
+        password: Joi.string().required()
+      })
+    })
   })
 })
-  .and('MONGO_USER', 'MONGO_PASSWORD')
-  .when(Joi.object({ EMAIL_HOST: Joi.exist() }), {
-    then: Joi.object({
-      EMAIL_USER: Joi.string().required(),
-      EMAIL_PASS: Joi.string().required()
-    })
-  })
-  .when(Joi.object({ EMAIL_SERVICE: Joi.exist() }), {
-    then: Joi.object({
-      EMAIL_USER: Joi.string().required(),
-      EMAIL_PASS: Joi.string().required()
-    })
-  })
-  .unknown()
+  .unknown(false)
   .required();
-
-JoiObjectValidator(envVarsSchema, process.env);
+const config = {
+  ...JoiObjectValidator(configVarsSchema, configJSON[configJSON.env]),
+  env
+};
+module.exports = config;
