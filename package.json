@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently --raw \"ng build --watch\" \"nodemon server\"",
+    "start": "concurrently --raw -k \"npm run loadConfig && ng build --watch\" \"nodemon server\"",
+    "prod": "npm run loadConfig && npm run build && node server",
     "build": "ng build --prod",
+    "loadConfig": "node src/environments/loadConfig.js",
     "server": "node server",
     "test": "ng test",
     "lint": "ng lint",
