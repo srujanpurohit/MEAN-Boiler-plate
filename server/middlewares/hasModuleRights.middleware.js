@@ -3,6 +3,11 @@ const Joi = require('joi');
 const JoiObjectValidator = require('../utils/JoiObjectValidator');
 const { modules } = require('../config/modulesAndRights');
 
+/**
+ * Check if user has right to given module
+ * @param {string} moduleName
+ * @param {'read'| 'create'| 'update'| 'delete'} rightName
+ */
 module.exports = function (moduleName, rightName) {
   return function (req, res, next) {
     JoiObjectValidator(Joi.string().valid(...modules), moduleName);

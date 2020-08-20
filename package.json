@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently --raw -k \"npm run loadConfig && ng build --watch\" \"nodemon server\"",
+    "start": "concurrently --raw -k \"npm run loadConfig && ng build --watch\" \"nodemon server --inspect\"",
     "prod": "npm run loadConfig && npm run build && node server",
     "build": "ng build --prod",
     "loadConfig": "node src/environments/loadConfig.js",
@@ -25,6 +25,7 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "chart.js": "^2.9.3",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",

@@ -1,6 +1,7 @@
 {
   "env": "development",
   "development": {
+    "usingWebServer": false,
     "port": "8080",
     "jwt": {
       "secret": "0a6b944d-d2fb-46fc-a85e-0295c986cd9f",
@@ -12,8 +13,6 @@
       "password": "DBPassword",
       "host": "localhost",
       "port": "27017",
-      "socketAddresses": ["127.0.0.1:27017"],
-      "mongoURI": "mongodb://127.0.0.1:27017,127.0.0.1:27018/myDB",
       "mongooseDebug": true
     },
     "email": {
@@ -21,9 +20,39 @@
       "port": 587,
       "service": "gmail",
       "user": "Srujan@xyz.com",
-      "pass": "MyPassword",
+      "password": "MyPassword",
       "debug": true,
       "logger": true
+    },
+    "frontend": {
+      "baseUrl": "api/",
+      "production": false
+    }
+  },
+  "production": {
+    "usingWebServer": true,
+    "port": "80",
+    "jwt": {
+      "secret": "iLN9vT83Ix+VUam4GX16S/zXxMw=",
+      "algo": "HS256"
+    },
+    "mongo": {
+      "dbName": "myDB",
+      "mongoURI": "mongodb+srv://username:<password>@123ada-yc0my.mongodb.net/<dbname>?retryWrites=true&w=majority",
+      "mongooseDebug": false
+    },
+    "email": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "service": "gmail",
+      "user": "Srujan@xyz.com",
+      "password": "MyPassword",
+      "debug": false,
+      "logger": false
+    },
+    "frontend": {
+      "baseUrl": "https://example.acl213.com/api/",
+      "production": true
     }
   }
 }

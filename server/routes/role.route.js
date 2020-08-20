@@ -10,13 +10,15 @@ const {
   patchValidator
 } = require('../validators/roleSchema.validators');
 const isMongoObjectId = require('../validators/mongoObjectId.validator');
-const hasModuleRightsMiddleware = require('../middlewares/hasModuleRights.middleware');
+const hasModuleRights = require('../middlewares/hasModuleRights.middleware');
+const jwt = require('../middlewares/jwt.middleware');
 
-// for checking if user has module rights. can also be added to individual Route
-router.use(hasModuleRightsMiddleware('role', 'read'));
+const moduleName = 'role';
 
 router.post(
   '/',
+  jwt,
+  hasModuleRights(moduleName, 'create'),
   asyncHandler(async (req, res) => {
     roleData = addAndPutValidator(req.body);
     let role = await roleController.add(roleData);
@@ -25,6 +27,8 @@ router.post(
 );
 router.get(
   '/',
+  jwt,
+  hasModuleRights(moduleName, 'read'),
   asyncHandler(async (req, res) => {
     const queryParams = findQueryValidator(req.query);
     let roles = await roleController.find(queryParams);
@@ -33,6 +37,8 @@ router.get(
 );
 router.get(
   '/:id',
+  jwt,
+  hasModuleRights(moduleName, 'read'),
   asyncHandler(async (req, res) => {
     const _id = isMongoObjectId(req.params.id);
     let role = await roleController.findOne({ _id });
@@ -41,6 +47,8 @@ router.get(
 );
 router.put(
   '/:id',
+  jwt,
+  hasModuleRights(moduleName, 'update'),
   asyncHandler(async (req, res) => {
     const data = addAndPutValidator(req.body);
     const _id = isMongoObjectId(req.params.id);
@@ -61,6 +69,8 @@ router.put(
 ); */
 router.delete(
   '/:id',
+  jwt,
+  hasModuleRights(moduleName, 'delete'),
   asyncHandler(async (req, res) => {
     const _id = isMongoObjectId(req.params.id);
     let role = await roleController.delete({ _id });

@@ -10,6 +10,7 @@ const env = JoiObjectValidator(
 );
 // define validation for all the env vars
 const configVarsSchema = Joi.object({
+  usingWebServer: Joi.boolean().default(false),
   port: Joi.number().default(8080),
   jwt: Joi.object({
     secret: Joi.string().required().description('JWT Secret required to sign'),

@@ -8,6 +8,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const routes = require('../routes/index.route');
+const compression = require('compression');
 
 module.exports = app;
 if (config.env === 'development') {
@@ -29,14 +30,22 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
 
-// open api links based routes
-app.use('/api/', routes);
+if (config.usingWebServer) {
+  // static files served by web server and no need to add base route for apis
+  app.use('', routes);
+} else {
+  // compress responses
+  app.use(compression());
 
-// Serve angular files from Express if route is does not contain api
-app.use(express.static(path.join(__dirname, '../../dist')));
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../../dist' + '/index.html'));
-});
+  // open api links based routes
+  app.use('/api/', routes);
+
+  // Serve angular files from Express if route is does not contain api
+  app.use(express.static(path.join(__dirname, '../../dist')));
+  app.use((req, res) => {
+    res.sendFile(path.join(__dirname, '../../dist' + '/index.html'));
+  });
+}
 
 // error handler, send stacktrace only during development
 app.use((err, req, res, next) => {
