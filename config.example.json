@@ -25,7 +25,7 @@
       "logger": true
     },
     "frontend": {
-      "baseUrl": "api/",
+      "apiUrl": "api/",
       "production": false
     }
   },
@@ -51,7 +51,7 @@
       "logger": false
     },
     "frontend": {
-      "baseUrl": "https://example.acl213.com/api/",
+      "apiUrl": "https://example.acl213.com/api/",
       "production": true
     }
   }

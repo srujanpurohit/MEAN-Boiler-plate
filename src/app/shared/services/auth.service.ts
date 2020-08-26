@@ -35,7 +35,7 @@ export class AuthService {
     password: string;
   }): Observable<LoginResponse['userData']> {
     return this.http
-      .post<LoginResponse>(environment.baseUrl + `auth/login`, {
+      .post<LoginResponse>(environment.apiUrl + `auth/login`, {
         email,
         password
       })

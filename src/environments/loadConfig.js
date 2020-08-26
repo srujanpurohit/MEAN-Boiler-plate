@@ -22,17 +22,17 @@ if (!(typeof config[config.env].frontend.production === 'boolean')) {
       config.env
   );
 }
-if (!config[config.env].frontend.baseUrl) {
+if (!config[config.env].frontend.apiUrl) {
   if (config[config.env].usingWebServer) {
     throw new Error(
-      'Frontend config must contain baseUrl property with string value for env: ' +
+      'Frontend config must contain apiUrl property with string value for env: ' +
         config.env
     );
   } else {
-    config[config.env].frontend.baseUrl = '/';
+    config[config.env].frontend.apiUrl = '/';
   }
-} else if (!config[config.env].frontend.baseUrl.endsWith('/')) {
-  config[config.env].frontend.baseUrl += '/';
+} else if (!config[config.env].frontend.apiUrl.endsWith('/')) {
+  config[config.env].frontend.apiUrl += '/';
 }
 const envConfigFile =
   'export const environment = ' +

@@ -10,12 +10,12 @@ const roleRoutes = require('./role.route');
 // GET /ping - Check service health
 router.get('/ping', (req, res) => res.send('OK'));
 
-// module routes
+// Module routes
 router.use('/auth', authRoutes);
-router.use('/user', userRoutes);
-router.use('/role', roleRoutes);
+router.use('/users', userRoutes);
+router.use('/roles', roleRoutes);
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 router.use((req, res, next) => {
   return next(createError(404));
 });
