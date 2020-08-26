@@ -67,13 +67,13 @@ go to localhost:8080
 |	|	├ express.js		# generic express middleware chain
 |	|	├ modulesAndRights.js # returns modules and special rights array
 |	|	├ mongoose.js		# config file for mongoDB connection
+|	|	└ email.js  # email service initializer and email transporter provider
 |	├ controllers
 |	|	├ auth.controller.js
 |	|	├ role.controller.js
 |	|	└ user.controller.js
 |	├ helpers
-|	|	├ mailer
-|	|		└ index.js	# returns a function that can be used to send mail
+|	|	├ sendMail # returns a function that can be used to send mail
 |	|	└ transactionHandler.js # A wrapper function for mongoDB transaction
 |	├ middlewares
 |	|	├ hasModuleRights.middleware.js # Middleware to check if user has a particular right

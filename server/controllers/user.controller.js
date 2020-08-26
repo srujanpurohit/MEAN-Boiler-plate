@@ -39,7 +39,14 @@ module.exports = {
   },
   updatePassword: async (_id, password) => {
     password = await bcrypt.hash(password, 10);
-    return User.findOneAndUpdate({ _id }, password);
+    return User.findOneAndUpdate(
+      { _id },
+      {
+        password,
+        passwordResetToken: undefined,
+        resetPasswordExpires: undefined
+      }
+    );
   },
   delete: filter => {
     return User.delete(filter);

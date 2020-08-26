@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const { mongo: mongoConfig } = require('./config');
+const chalk = require('chalk');
 
 /**
  * Initiate connection with mongoDB server based on config in env file
@@ -37,21 +38,16 @@ exports.init = async () => {
   });
 
   mongoose.connection.on('error', err => {
-    console.log(
-      '\x1b[41m\x1b[30m',
-      `MongoDB connection Error:\n`,
-      err,
-      '\x1b[0m'
-    );
+    console.log(chalk.bgRed(err));
   });
 
   // If the Node process ends, close the Mongoose connection
   process.on('SIGINT', function () {
     mongoose.connection.close(function () {
       console.log(
-        '\x1b[43m\x1b[30m',
-        'Mongoose default connection disconnected through app termination',
-        '\x1b[0m'
+        chalk.black.bgYellow(
+          'Mongoose default connection disconnected through app termination'
+        )
       );
       process.exit(0);
     });

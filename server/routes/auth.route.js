@@ -15,3 +15,23 @@ router.post(
     return res.send(token);
   })
 );
+
+router.post(
+  '/forgot',
+  asyncHandler(async function (req, res) {
+    const response = await authController.forgot(
+      userSchemaValidators.emailValidator(req.body)
+    );
+    return res.send(response);
+  })
+);
+
+router.post(
+  '/reset',
+  asyncHandler(async function (req, res) {
+    const response = await authController.reset(
+      userSchemaValidators.resetPasswordValidator(req.body)
+    );
+    return res.send(response);
+  })
+);

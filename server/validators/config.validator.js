@@ -47,8 +47,8 @@ const configVarsSchema = Joi.object({
     host: Joi.string().description('EMAIL SMTP host url'),
     port: Joi.number(),
     service: Joi.string(),
-    user: Joi.string(),
-    password: Joi.string(),
+    user: Joi.string().required(),
+    pass: Joi.string().required(),
     debug: Joi.boolean().when(env, {
       is: Joi.string().equal('development'),
       then: Joi.boolean().default(true),
@@ -59,17 +59,9 @@ const configVarsSchema = Joi.object({
       then: Joi.boolean().default(true),
       otherwise: Joi.boolean().default(false)
     })
-  }).when(Joi.object({ host: Joi.exist() }), {
-    then: Joi.object({
-      user: Joi.string().required(),
-      password: Joi.string().required()
-    }).when(Joi.object({ service: Joi.exist() }), {
-      then: Joi.object({
-        user: Joi.string().required(),
-        password: Joi.string().required()
-      })
-    })
   })
+    .xor('service', 'host')
+    .and('host', 'port')
 })
   .unknown(false)
   .required();
