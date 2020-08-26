@@ -33,7 +33,7 @@ browser) to the bottom (database). The stack is made up of:
 
 - Node.js - [Download page](https://nodejs.org/en/download/) .
 
-- Mongodb - [Download Page](https://www.mongodb.com/try/download/community
+- Mongodb - [Download Page](https://www.mongodb.com/try/download/community)
   **or** [Sign up page](https://www.mongodb.com/try)
 
 ### Getting Started
@@ -63,7 +63,7 @@ go to localhost:8080
 ```bash
 ├ server
 |	├ config
-|	|	├ config.js			# returns the config object from config.json
+|	|	├ config.js		# returns the config object from config.json
 |	|	├ express.js		# generic express middleware chain
 |	|	├ modulesAndRights.js # returns modules and special rights array
 |	|	├ mongoose.js		# config file for mongoDB connection
@@ -73,7 +73,7 @@ go to localhost:8080
 |	|	└ user.controller.js
 |	├ helpers
 |	|	├ mailer
-|	|		└ index.js			# returns a function that can be used to send mail
+|	|		└ index.js	# returns a function that can be used to send mail
 |	|	└ transactionHandler.js # A wrapper function for mongoDB transaction
 |	├ middlewares
 |	|	├ hasModuleRights.middleware.js # Middleware to check if user has a particular right
@@ -100,7 +100,7 @@ go to localhost:8080
 |	├ app
 |	|	├ components 	# contains 404 not found component
 |	|	├ interceptor
-|	|	|	├ http-error.interceptor.ts		# converts http-error response from backend to normal http-error
+|	|	|	├ http-error.interceptor.ts	# converts http-error response from backend to normal http-error
 |	|	|	└ auth-header.interceptor.ts	# adds JWT header to requests
 |	|	├ modules
 |	|	|	├ Auth	# contains login and register components
