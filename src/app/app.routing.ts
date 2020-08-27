@@ -1,5 +1,5 @@
 import { RouterModule } from '@angular/router';
-import { LoggedInGuard, ModuleRightsGuard } from './shared/guards';
+import { LoggedInGuard, ModuleRightsGuard } from './modules/shared/guards';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 

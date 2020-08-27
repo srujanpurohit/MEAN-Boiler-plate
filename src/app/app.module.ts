@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing';
 import { AuthHeaderInterceptor, HttpErrorInterceptor } from './interceptors';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from './modules/shared/shared.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginResponse } from '../interfaces/auth.model';
+import { LoginResponse } from '../shared/interfaces/auth.model';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { tap, pluck } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class AuthService {
     return this.user$.asObservable();
   }
 
-  public get authToken(): LoginResponse['token'] {
+  public get authToken(): LoginResponse['token'] | null {
     return localStorage.getItem('token');
   }
   public set authToken(token: LoginResponse['token'] | null) {

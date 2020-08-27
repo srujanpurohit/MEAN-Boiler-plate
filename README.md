@@ -102,10 +102,11 @@ go to localhost:8080
 |	|	├ interceptor
 |	|	|	├ http-error.interceptor.ts	# converts http-error response from backend to normal http-error
 |	|	|	└ auth-header.interceptor.ts	# adds JWT header to requests
-|	|	├ modules
-|	|	|	├ Auth	# contains login and register components
-|	|	|	└ Home	# contains modules that will be visible after login
-|	|	└ shared 	# shared module containing interfaces, logged in guard, module-rights guard and auth service
+|	|	└ modules
+|	|		├ Auth	# contains login and register components
+|	|		├ Home	# contains component that will be visible after login
+| |   ├ Roles # contains Role based components
+|	|	  └ Shared 	# shared module containing interfaces, logged in guard, module-rights guard and auth service
 |	└ environments
 |		└ loadConfig.js  # creates environment.ts based on config.json
 └ config.example.json	# App config file
