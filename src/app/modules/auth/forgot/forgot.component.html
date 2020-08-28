@@ -1,0 +1,6 @@
+<form>
+  <label for="">Email</label> :
+  <input type="email" #email />
+  <button (click)="sendOtp(email.value)">Send Otp</button>
+</form>
+{{ error }}

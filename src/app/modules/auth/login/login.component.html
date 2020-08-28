@@ -1,10 +1,9 @@
 <form [formGroup]="form" (ngSubmit)="login()">
   <input type="text" formControlName="email" placeholder="Email" />
   <input type="password" formControlName="password" placeholder="Password" />
-  <button type="submit" [disabled]="form.invalid">
-    Login
-  </button>
+  <button type="submit" [disabled]="form.invalid">Login</button>
 </form>
+forgot password? <a href="#" [routerLink]="['/auth/Forgot']">click here</a>
 <div>
   <span>
     {{ error }}

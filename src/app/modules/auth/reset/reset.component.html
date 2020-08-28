@@ -1,0 +1,11 @@
+<form [formGroup]="form" (ngSubmit)="resetPassword()">
+  <input type="OTP" placeholder="OTP" formControlName="passwordResetToken" />
+  <input type="password" placeholder="password" formControlName="password" />
+  <input
+    type="password"
+    placeholder="repeatPassword"
+    formControlName="repeatPassword"
+  />
+  <button type="submit" [disabled]="form.invalid">Change</button>
+</form>
+{{ error }}

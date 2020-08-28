@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoginResponse } from '../shared/interfaces/auth.model';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { tap, pluck } from 'rxjs/operators';
+import { tap, pluck, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
+
+  private moduleUrl = environment.apiUrl + 'auth/';
 
   private user$ = new BehaviorSubject<LoginResponse['userData'] | null>(
     JSON.parse(localStorage.getItem('user'))
@@ -35,7 +37,7 @@ export class AuthService {
     password: string;
   }): Observable<LoginResponse['userData']> {
     return this.http
-      .post<LoginResponse>(environment.apiUrl + `auth/login`, {
+      .post<LoginResponse>(this.moduleUrl + 'login', {
         email,
         password
       })
@@ -48,6 +50,23 @@ export class AuthService {
         pluck('userData')
       );
   }
+
+  public forgot(email: { email: string }): Observable<string> {
+    return this.http
+      .post<{ message: string }>(this.moduleUrl + 'forgot', email)
+      .pipe(map(response => response.message));
+  }
+
+  public changePassword(resetObj: {
+    email: string;
+    password: string;
+    repeatPassword: string;
+  }): Observable<string> {
+    return this.http
+      .post<{ message: string }>(this.moduleUrl + 'reset', resetObj)
+      .pipe(map(response => response.message));
+  }
+
   public logout(): void {
     this.user$.next(null);
     localStorage.removeItem('user');

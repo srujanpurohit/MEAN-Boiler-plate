@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class RolesService {
   constructor(private http: HttpClient) {}
-  private roleBaseUrl = environment.apiUrl + 'role/';
+  private roleBaseUrl = environment.apiUrl + 'roles/';
 
   public getRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(this.roleBaseUrl);

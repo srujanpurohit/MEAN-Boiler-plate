@@ -7,7 +7,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -17,6 +17,16 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
+      map((response: any) => {
+        if (
+          typeof response === 'object' &&
+          Object.entries(response).length === 1 &&
+          response.message
+        ) {
+          return response.message;
+        }
+        return response;
+      }),
       catchError((error: HttpErrorResponse) => {
         return throwError(
           new HttpErrorResponse({

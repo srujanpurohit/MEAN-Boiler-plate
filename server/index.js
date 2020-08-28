@@ -2,9 +2,11 @@
 const config = require('./config/config');
 const app = require('./config/express');
 const chalk = require('chalk');
-require('./config/mongoose')
-  .init()
-  .then(() => require('./config/email').init())
+
+Promise.all([
+  require('./config/mongoose').init(), // initiate mongoose
+  require('./config/email').init() // initiate nodemailer transporter
+])
   .then(() => {
     app.listen(config.port, () => {
       console.log(

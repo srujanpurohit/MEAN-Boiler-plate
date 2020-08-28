@@ -7,5 +7,5 @@ import { environment } from '../../../environments/environment';
 export class HomeService {
   constructor(private http: HttpClient) {}
 
-  public me = this.http.get(environment.apiUrl + 'user/me');
+  public me = this.http.get(environment.apiUrl + 'users/me');
 }

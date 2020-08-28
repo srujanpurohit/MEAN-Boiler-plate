@@ -52,7 +52,7 @@ module.exports = {
       If you did not request this, please ignore this email, your password will remain unchanged
     `
     });
-    return 'OTP sent via Email';
+    return { message: 'OTP sent via Email' };
   },
   reset: async ({ passwordResetToken, password }) => {
     const user = await userController.findOne({
@@ -61,7 +61,7 @@ module.exports = {
     });
     if (!user) throw httpError(400, 'Reset Token is invalid or expired');
     await userController.updatePassword(user._id, password);
-    return 'Password Updated Successfully.';
+    return { message: 'Password Updated Successfully.' };
   }
 };
 function generateToken(userData, expiresIn) {

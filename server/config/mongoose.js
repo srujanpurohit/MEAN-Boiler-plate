@@ -56,4 +56,5 @@ exports.init = async () => {
   if (mongoConfig.mongooseDebug) {
     mongoose.set('debug', true);
   }
+  console.log(chalk.black.bgYellow('MongoDB connected'));
 };
