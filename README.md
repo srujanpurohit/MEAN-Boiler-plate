@@ -63,10 +63,11 @@ go to localhost:8080
 ```bash
 ├ server
 |	├ config
-|	|	├ config.js		# returns the config object from config.json
+|	|	├ config.js		# Validates and returns the config object from config.json
 |	|	├ express.js		# generic express middleware chain
 |	|	├ modulesAndRights.js # returns modules and special rights array
 |	|	├ mongoose.js		# config file for mongoDB connection
+|	|	├ passport.js		# config file for different types of user validation
 |	|	└ email.js  # email service initializer and email transporter provider
 |	├ controllers
 |	|	├ auth.controller.js
@@ -77,8 +78,7 @@ go to localhost:8080
 |	|	└ transactionHandler.js # A wrapper function for mongoDB transaction
 |	├ middlewares
 |	|	├ hasModuleRights.middleware.js # Middleware to check if user has a particular right
-|	|	├ isAdmin.middleware.js # check if logged in user is admin
-|	|	└ jwt.middleware.js 	# check if user has valid JWT token
+|	|	├ specialRights.middleware.js # check if user has given special rights
 |	├ models
 |	|	├ role.model.js
 |	|	└ user.model.js
@@ -90,7 +90,6 @@ go to localhost:8080
 |	├ utils
 |	|	└ JoiObjectValidator.js # A generic function for Joi validation that throws an error if validation fails
 |	├ routes
-|	|	├ config.validator.js	# validate config.json file
 |	|	├ findQueryValidator.js # validate pagination query
 |	|	├ mongoObjectId.validator.js # validate mongo objectId
 |	|	├ roleSchema.validators.js

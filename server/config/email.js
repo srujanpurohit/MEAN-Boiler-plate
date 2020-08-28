@@ -1,20 +1,20 @@
 const nodemailer = require('nodemailer');
-const config = require('./config');
+const { email } = require('./config');
 
 let transporter;
 exports.init = function () {
   if (transporter) return Promise.reject('Transporter already initiated');
-  if (config.email) {
+  if (email) {
     transporter = nodemailer.createTransport({
-      host: config.email.host,
-      port: config.email.port,
-      service: config.email.service,
+      host: email.host,
+      port: email.port,
+      service: email.service,
       auth: {
-        user: config.email.user,
-        pass: config.email.pass
+        user: email.user,
+        pass: email.pass
       },
-      logger: config.email.logger,
-      debug: config.email.debug
+      logger: email.logger,
+      debug: email.debug
     });
     return transporter.verify();
   }

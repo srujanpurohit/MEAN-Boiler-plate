@@ -11,7 +11,7 @@ const {
 } = require('../validators/roleSchema.validators');
 const isMongoObjectId = require('../validators/mongoObjectId.validator');
 const hasModuleRights = require('../middlewares/hasModuleRights.middleware');
-const jwt = require('../middlewares/jwt.middleware');
+const jwt = require('passport').authenticate('jwt', { session: false });
 
 const moduleName = 'role';
 

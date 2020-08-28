@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+const { jwtSecret } = require('../config/config');
 const userController = require('./user.controller');
 const bcrypt = require('bcrypt');
 const httpError = require('http-errors');
@@ -55,17 +55,21 @@ module.exports = {
     return { message: 'OTP sent via Email' };
   },
   reset: async ({ passwordResetToken, password }) => {
-    const user = await userController.findOne({
-      passwordResetToken,
-      resetPasswordExpires: { $gt: Date.now() }
-    });
+    const user = await userController.findOne(
+      {
+        passwordResetToken,
+        resetPasswordExpires: { $gt: Date.now() }
+      },
+      undefined,
+      true
+    );
     if (!user) throw httpError(400, 'Reset Token is invalid or expired');
     await userController.updatePassword(user._id, password);
     return { message: 'Password Updated Successfully.' };
   }
 };
 function generateToken(userData, expiresIn) {
-  return jwt.sign(userData, config.jwt.secret, {
+  return jwt.sign(userData, jwtSecret, {
     expiresIn
   });
 }

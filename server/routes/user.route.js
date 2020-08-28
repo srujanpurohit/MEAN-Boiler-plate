@@ -7,7 +7,7 @@ const UserController = require('../controllers/user.controller');
 const userSchemaValidators = require('../validators/userSchema.validators');
 const isMongoObjectId = require('../validators/mongoObjectId.validator');
 const findQueryValidator = require('../validators/findQueryValidator');
-const jwt = require('../middlewares/jwt.middleware');
+const jwt = require('passport').authenticate('jwt', { session: false });
 const hasModuleRights = require('../middlewares/hasModuleRights.middleware');
 
 const moduleName = 'user';

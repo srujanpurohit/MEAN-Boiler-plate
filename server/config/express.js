@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const routes = require('../routes/index.route');
 const compression = require('compression');
+const passport = require('./passport');
 
 module.exports = app;
 if (config.env === 'development') {
@@ -29,6 +30,9 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+// Initialize passport to use different strategies
+app.use(passport.initialize());
 
 if (config.usingWebServer) {
   // static files served by web server and no need to add base route for apis

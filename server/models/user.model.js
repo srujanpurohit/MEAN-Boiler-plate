@@ -61,14 +61,13 @@ UserSchema.statics.UserRoleRightSummary = async function (query) {
     moduleRights: {}
   };
   user.roles.forEach(role => {
-    roleSummary.specialRights = roleSummary.specialRights.concat(
-      role.specialRights
-    );
+    roleSummary.specialRights.push(...role.specialRights);
     roleSummary.roleNames.push(role.name);
     role.moduleRights.forEach(moduleRight => {
       let summaryModule = roleSummary.moduleRights[moduleRight.module];
       if (summaryModule) {
         summaryModule = {
+          // Simple Union of individual Rights
           read: summaryModule.read || moduleRight.rights.read,
           create: summaryModule.create || moduleRight.rights.create,
           update: summaryModule.update || moduleRight.rights.update,
@@ -80,6 +79,8 @@ UserSchema.statics.UserRoleRightSummary = async function (query) {
     });
   });
   delete user.roles;
+  // remove duplicate roles
+  roleSummary.specialRights = [...new Set(roleSummary.specialRights)];
   return { ...user, roleSummary };
 };
 

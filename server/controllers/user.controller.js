@@ -3,6 +3,12 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user.model');
 const createHttpError = require('http-errors');
 
+const securityOptions = {
+  password: 0,
+  passwordResetToken: 0,
+  resetPasswordExpires: 0
+};
+
 module.exports = {
   add: async data => {
     data.password = await bcrypt.hash(data.password, 10);
@@ -10,16 +16,18 @@ module.exports = {
   },
   find: ({ query = {}, options = {} }) => {
     delete query.password;
+    delete query.passwordResetToken;
     return User.paginate(query, {
       ...options,
-      select: { ...options.select, password: 0 }
+      select: { ...options.select, ...securityOptions }
     });
   },
-  findOne: (query = {}, includePassword = false, populateObj) => {
-    delete query.password;
+  findOne: (query = {}, populateObj, includePasswordFields = false) => {
     let queryOptions;
-    if (!includePassword) {
-      queryOptions = { password: 0 };
+    if (!includePasswordFields) {
+      queryOptions = securityOptions;
+      delete query.password;
+      delete query.passwordResetToken;
     }
     return User.findOne(query, queryOptions).populate(populateObj);
   },
