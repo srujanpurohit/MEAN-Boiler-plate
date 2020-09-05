@@ -3,10 +3,7 @@
   "development": {
     "usingWebServer": false,
     "port": "8080",
-    "jwt": {
-      "secret": "0a6b944d-d2fb-46fc-a85e-0295c986cd9f",
-      "algo": "HS256"
-    },
+    "jwtSecret": "0a6b944d-d2fb-46fc-a85e-0295c986cd9f",
     "mongo": {
       "dbName": "myDB",
       "userName": "DBUsername",
@@ -32,10 +29,7 @@
   "production": {
     "usingWebServer": true,
     "port": "80",
-    "jwt": {
-      "secret": "iLN9vT83Ix+VUam4GX16S/zXxMw=",
-      "algo": "HS256"
-    },
+    "jwtSecret": "iLN9vT83Ix+VUam4GX16S/zXxMw=",
     "mongo": {
       "dbName": "myDB",
       "mongoURI": "mongodb+srv://username:<password>@123ada-yc0my.mongodb.net/<dbname>?retryWrites=true&w=majority",
